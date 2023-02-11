@@ -3,6 +3,7 @@ import { Card, CardHeader, CardMedia, IconButton, Paper } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import { CardType, cardsActions } from '../store/slices/cards.slice';
 import { useAppDispatch } from '../hook/redux';
+import { getFileName } from '../shared/libs/getFileName';
 
 type ImageCardPropsType = {
   card: CardType;
@@ -43,8 +44,12 @@ const ImageCard: React.FC<ImageCardPropsType> = ({ card, isClosed }) => {
               <CloseIcon />
             </IconButton>
           }
-          title={card.category}
-          subheader={new Date(card.timestamp).toLocaleDateString()}
+          title={getFileName(card.image)}
+          subheader={`date:${new Date(
+            card.timestamp
+          ).toLocaleDateString()} file size:${card.filesize} category:${
+            card.category
+          }`}
           sx={{ height: 100, backgroundColor: '#b0bec5' }}
         />
       </Card>

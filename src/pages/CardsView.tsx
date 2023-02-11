@@ -11,11 +11,16 @@ import {
   Radio,
   RadioGroup,
 } from '@mui/material';
-import { CardType, cardsActions } from '../store/slices/cards.slice';
+import {
+  CardKeysType,
+  CardType,
+  cardsActions,
+} from '../store/slices/cards.slice';
 import { useRef, useState } from 'react';
-import DeleteIcon from '@mui/icons-material/Delete';
-import RestoreFromTrashIcon from '@mui/icons-material/RestoreFromTrash';
+import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
+import VisibilityIcon from '@mui/icons-material/Visibility';
 import { useAppSelector, useAppDispatch } from '../hook/redux';
+import { sort } from '../shared/libs/sort';
 
 type CardsViewPropsType = {
   cards: CardType[];
@@ -25,6 +30,7 @@ const CardsView: React.FC<CardsViewPropsType> = ({ cards = [] }) => {
   const dispatch = useAppDispatch();
   const closedImages = useAppSelector((state) => state.cards.closedCards);
   const [currentPage, setCurrentPage] = useState<number>(1);
+  const [sortBy, setSortBy] = useState<CardKeysType>('category');
   const pageSize = 30;
   const pagesCount = useRef(Math.ceil(cards.length / pageSize));
 
@@ -57,6 +63,11 @@ const CardsView: React.FC<CardsViewPropsType> = ({ cards = [] }) => {
 
   const restoreImagesHandler = () => {
     dispatch(cardsActions.restoreCards());
+  };
+
+  const setSortHandler = (type: CardKeysType) => {
+    dispatch(cardsActions.sortCards(type));
+    setSortBy(type);
   };
 
   return (
@@ -92,42 +103,42 @@ const CardsView: React.FC<CardsViewPropsType> = ({ cards = [] }) => {
               value="category"
               control={<Radio />}
               label="Category"
-              // onClick={}
-              // checked={currentDisplayType === 'cards'}
+              onClick={() => setSortHandler('category')}
+              checked={sortBy === 'category'}
             />
             <FormControlLabel
               value="date"
               control={<Radio />}
               label="Date"
-              // onClick={() => setDisplayType('tree')}
-              // checked={currentDisplayType === 'tree'}
+              onClick={() => setSortHandler('timestamp')}
+              checked={sortBy === 'timestamp'}
             />
             <FormControlLabel
               value="fileName"
               control={<Radio />}
               label="File name"
-              // onClick={() => setDisplayType('tree')}
-              // checked={currentDisplayType === 'tree'}
+              onClick={() => setSortHandler('image')}
+              checked={sortBy === 'image'}
             />
             <FormControlLabel
               value="fileSize"
               control={<Radio />}
               label="File size"
-              // onClick={() => setDisplayType('tree')}
-              // checked={currentDisplayType === 'tree'}
+              onClick={() => setSortHandler('filesize')}
+              checked={sortBy === 'filesize'}
             />
           </RadioGroup>
         </FormControl>
         <Box sx={{ display: 'flex', alignItems: 'center' }}>
           {!!closedImages?.length && (
-            <RestoreFromTrashIcon
+            <VisibilityIcon
               color="action"
               sx={{ marginRight: '5px', cursor: 'pointer' }}
               onClick={restoreImagesHandler}
             />
           )}
           <Badge badgeContent={closedImages?.length} color="primary">
-            <DeleteIcon color="action" />
+            <VisibilityOffIcon color="action" />
           </Badge>
         </Box>
       </Container>

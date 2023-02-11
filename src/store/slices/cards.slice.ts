@@ -1,4 +1,5 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
+import { sort } from '../../shared/libs/sort';
 
 export type CardType = {
   image: string;
@@ -6,6 +7,8 @@ export type CardType = {
   timestamp: number;
   category: string;
 };
+
+export type CardKeysType = 'category' | 'filesize' | 'image' | 'timestamp';
 
 type CardsType = {
   loading: boolean;
@@ -43,6 +46,9 @@ export const cardsSlice = createSlice({
     restoreCards(state) {
       state.closedCards = [];
       localStorage.removeItem('closedCards');
+    },
+    sortCards(state, action: PayloadAction<CardKeysType>) {
+      state.cards = sort(state.cards, action.payload);
     },
   },
 });
