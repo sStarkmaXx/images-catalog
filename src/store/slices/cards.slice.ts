@@ -7,16 +7,18 @@ export type CardType = {
   category: string;
 };
 
-type CardsResponceType = {
+type CardsType = {
   loading: boolean;
   error: string;
   cards: CardType[];
+  closedCards: Array<string>;
 };
 
-const initialState: CardsResponceType = {
+const initialState: CardsType = {
   loading: false,
   error: '',
   cards: [],
+  closedCards: localStorage.getItem('closedCards')?.split(',') || [],
 };
 
 export const cardsSlice = createSlice({
@@ -33,6 +35,14 @@ export const cardsSlice = createSlice({
     fetchError(state, action: PayloadAction<Error>) {
       state.loading = false;
       state.error = action.payload.message;
+    },
+    closeCard(state, action: PayloadAction<string>) {
+      state.closedCards?.push(action.payload);
+      localStorage.setItem('closedCards', state.closedCards!.join(','));
+    },
+    restoreCards(state) {
+      state.closedCards = [];
+      localStorage.removeItem('closedCards');
     },
   },
 });

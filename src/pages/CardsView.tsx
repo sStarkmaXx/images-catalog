@@ -11,16 +11,19 @@ import {
   Radio,
   RadioGroup,
 } from '@mui/material';
-import { CardType } from '../store/slices/cards.slice';
+import { CardType, cardsActions } from '../store/slices/cards.slice';
 import { useRef, useState } from 'react';
 import DeleteIcon from '@mui/icons-material/Delete';
 import RestoreFromTrashIcon from '@mui/icons-material/RestoreFromTrash';
+import { useAppSelector, useAppDispatch } from '../hook/redux';
 
 type CardsViewPropsType = {
   cards: CardType[];
 };
 
 const CardsView: React.FC<CardsViewPropsType> = ({ cards = [] }) => {
+  const dispatch = useAppDispatch();
+  const closedImages = useAppSelector((state) => state.cards.closedCards);
   const [currentPage, setCurrentPage] = useState<number>(1);
   const pageSize = 30;
   const pagesCount = useRef(Math.ceil(cards.length / pageSize));
@@ -40,11 +43,20 @@ const CardsView: React.FC<CardsViewPropsType> = ({ cards = [] }) => {
   };
 
   const cardsRender = cardsForRender()?.map((card) => {
-    return <ImageCard key={v1()} card={card} />;
+    let isClosed = false;
+    if (closedImages) {
+      isClosed = !!closedImages.find((image) => image === card.image);
+    }
+
+    return <ImageCard key={v1()} card={card} isClosed={isClosed} />;
   });
 
   const onChangeHandler = (e: React.ChangeEvent<unknown>, page: number) => {
     setCurrentPage(page);
+  };
+
+  const restoreImagesHandler = () => {
+    dispatch(cardsActions.restoreCards());
   };
 
   return (
@@ -107,11 +119,14 @@ const CardsView: React.FC<CardsViewPropsType> = ({ cards = [] }) => {
           </RadioGroup>
         </FormControl>
         <Box sx={{ display: 'flex', alignItems: 'center' }}>
-          <RestoreFromTrashIcon
-            color="action"
-            sx={{ marginRight: '5px', cursor: 'pointer' }}
-          />
-          <Badge badgeContent={4} color="primary">
+          {!!closedImages?.length && (
+            <RestoreFromTrashIcon
+              color="action"
+              sx={{ marginRight: '5px', cursor: 'pointer' }}
+              onClick={restoreImagesHandler}
+            />
+          )}
+          <Badge badgeContent={closedImages?.length} color="primary">
             <DeleteIcon color="action" />
           </Badge>
         </Box>

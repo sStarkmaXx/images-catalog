@@ -8,7 +8,6 @@ export const fetchCards = () => {
       dispatch(cardsActions.fetching());
       const responce = await axios.get('catalog.json');
       dispatch(cardsActions.fetchSuccess(responce.data));
-      console.log(responce);
     } catch (e) {
       dispatch(cardsActions.fetchError(e as Error));
     }
