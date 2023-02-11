@@ -108,7 +108,6 @@ const CardsView = () => {
         width: '100%',
         flexWrap: 'wrap',
         gap: '20px',
-        paddingTop: '20px   ',
       }}
     >
       {cards}

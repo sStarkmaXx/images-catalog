@@ -1,8 +1,12 @@
 import * as React from 'react';
-import Card from '@mui/material/Card';
-import CardHeader from '@mui/material/CardHeader';
-import CardMedia from '@mui/material/CardMedia';
-import IconButton, { IconButtonProps } from '@mui/material/IconButton';
+import {
+  Card,
+  CardHeader,
+  CardMedia,
+  IconButton,
+  Divider,
+  Paper,
+} from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import { CardType } from './CardsView';
 
@@ -11,30 +15,39 @@ type ImageCardPropsType = {
 };
 
 const ImageCard: React.FC<ImageCardPropsType> = ({ card }) => {
-  const [expanded, setExpanded] = React.useState(false);
-
-  const handleExpandClick = () => {
-    setExpanded(!expanded);
-  };
+  const [fade, setFade] = React.useState(true);
 
   return (
-    <Card sx={{ width: 345 }}>
-      <CardHeader
-        action={
-          <IconButton aria-label="settings">
-            <CloseIcon />
-          </IconButton>
-        }
-        title={card.category}
-        subheader={new Date(card.timestamp).toLocaleDateString()}
-      />
-      <CardMedia
-        component="img"
-        height="194"
-        image={'http://contest.elecard.ru/frontend_data/' + card.image}
-        alt="Paella dish"
-      />
-    </Card>
+    <Paper
+      elevation={8}
+      sx={{
+        display: `${fade ? 'block' : 'none'}`,
+      }}
+    >
+      <Card sx={{ width: 400, height: 300 }}>
+        <CardMedia
+          component="img"
+          image={'http://contest.elecard.ru/frontend_data/' + card.image}
+          alt="Paella dish"
+          height={200}
+          sx={{
+            backgroundColor: '#eceff1',
+            objectFit: 'contain',
+            margin: 'auto',
+          }}
+        />
+        <CardHeader
+          action={
+            <IconButton aria-label="settings" onClick={() => setFade(false)}>
+              <CloseIcon />
+            </IconButton>
+          }
+          title={card.category}
+          subheader={new Date(card.timestamp).toLocaleDateString()}
+          sx={{ height: 100, backgroundColor: '#b0bec5' }}
+        />
+      </Card>
+    </Paper>
   );
 };
 

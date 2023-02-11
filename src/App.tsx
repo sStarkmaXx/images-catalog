@@ -2,9 +2,9 @@ import './App.css';
 import CardsView from './components/CardsView';
 import Header from './components/Header';
 import { useState } from 'react';
-import TreeView from './components/TreeView';
 import Footer from './components/Footer';
-import { Container } from '@mui/material';
+import { Box } from '@mui/material';
+import SimpleFade from './components/Asd';
 
 export type DisplayType = 'cards' | 'tree';
 
@@ -21,15 +21,20 @@ function App() {
         currentDisplayType={displayType}
         setDisplayType={setDisplayTypeHandler}
       />
-      <Container
+
+      <Box
         sx={{
           flexGrow: '1',
           overflow: 'auto',
+          margin: 0,
+          width: '100%',
+          padding: '20px 20px',
         }}
       >
+        {/* {displayType === 'cards' && <TitlebarImageList />} */}
         {displayType === 'cards' && <CardsView />}
-        {displayType === 'tree' && <TreeView />}
-      </Container>
+        {displayType === 'tree' && <SimpleFade />}
+      </Box>
       <Footer />
     </div>
   );
