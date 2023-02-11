@@ -9,14 +9,20 @@ import { Accordion as MUIaccord } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { useAppSelector } from '../hook/redux';
 import { v1 } from 'uuid';
+import ModalWindow from '../pages/ModalWindow';
+import { useState } from 'react';
 
 type AccordionPropsType = {
   category: string;
+  //   handleOpen: () => void;
 };
 
 const Accordion: React.FC<AccordionPropsType> = ({ category }) => {
   const cards = useAppSelector((state) => state.cards.cards);
   const imagesByCategory = cards.filter((card) => card.category === category);
+  const [image, setImage] = useState({ show: false, imageUrl: '' });
+  const handleOpen = (url: string) => setImage({ show: true, imageUrl: url });
+  const handleClose = () => setImage({ show: false, imageUrl: '' });
 
   return (
     <MUIaccord sx={{ backgroundColor: '#263238', color: 'white' }}>
@@ -39,10 +45,16 @@ const Accordion: React.FC<AccordionPropsType> = ({ category }) => {
                 src={`http://contest.elecard.ru/frontend_data/${item.image}`}
                 srcSet={`http://contest.elecard.ru/frontend_data/${item.image}`}
                 loading="lazy"
+                onClick={() => handleOpen(item.image)}
               />
             </ImageListItem>
           ))}
         </ImageList>
+        <ModalWindow
+          open={image.show}
+          onClose={handleClose}
+          image={image.imageUrl}
+        />
       </AccordionDetails>
     </MUIaccord>
   );

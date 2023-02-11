@@ -4,6 +4,7 @@ import Accordion from '../widgets/Accordion';
 
 const TreeView = () => {
   const cards = useAppSelector((state) => state.cards.cards);
+
   const getCategories = () => {
     const categoriesArr: Array<string> = [];
     cards.map((card, index) => {
@@ -25,7 +26,7 @@ const TreeView = () => {
     return <Accordion key={v1()} category={category} />;
   });
 
-  return <div className="123">{categories}</div>;
+  return <div>{categories}</div>;
 };
 
 export default TreeView;
