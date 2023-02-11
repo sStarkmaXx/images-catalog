@@ -1,14 +1,7 @@
 import * as React from 'react';
-import {
-  Card,
-  CardHeader,
-  CardMedia,
-  IconButton,
-  Divider,
-  Paper,
-} from '@mui/material';
+import { Card, CardHeader, CardMedia, IconButton, Paper } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
-import { CardType } from './CardsView';
+import { CardType } from '../store/slices/cards.slice';
 
 type ImageCardPropsType = {
   card: CardType;
