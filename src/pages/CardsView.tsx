@@ -20,7 +20,6 @@ import { useRef, useState } from 'react';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import { useAppSelector, useAppDispatch } from '../hook/redux';
-import { sort } from '../shared/libs/sort';
 
 type CardsViewPropsType = {
   cards: CardType[];

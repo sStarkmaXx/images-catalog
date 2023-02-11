@@ -1,11 +1,31 @@
-import Loader from '../shared/ui/loader/Loader';
+import { v1 } from 'uuid';
+import { useAppSelector } from '../hook/redux';
+import Accordion from '../widgets/Accordion';
 
 const TreeView = () => {
-  return (
-    <div className="123">
-      <Loader />
-    </div>
-  );
+  const cards = useAppSelector((state) => state.cards.cards);
+  const getCategories = () => {
+    const categoriesArr: Array<string> = [];
+    cards.map((card, index) => {
+      if (!categoriesArr.length) {
+        categoriesArr.push(card.category);
+      } else if (
+        cards[index + 1] &&
+        card.category !== cards[index + 1].category
+      ) {
+        categoriesArr.push(cards[index + 1].category);
+      } else {
+        return;
+      }
+    });
+    return categoriesArr;
+  };
+
+  const categories = getCategories().map((category) => {
+    return <Accordion key={v1()} category={category} />;
+  });
+
+  return <div className="123">{categories}</div>;
 };
 
 export default TreeView;
