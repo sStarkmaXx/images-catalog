@@ -17,7 +17,7 @@ const ImageCard: React.FC<ImageCardPropsType> = ({ card }) => {
         display: `${fade ? 'block' : 'none'}`,
       }}
     >
-      <Card sx={{ width: 400, height: 300 }}>
+      <Card sx={{ width: 350, height: 300 }}>
         <CardMedia
           component="img"
           image={'http://contest.elecard.ru/frontend_data/' + card.image}
