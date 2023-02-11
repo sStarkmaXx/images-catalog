@@ -4,12 +4,16 @@ const Footer = () => {
   return (
     <Box
       sx={{
+        display: 'flex',
         width: '100%',
-        height: '50px',
-        backgroundColor: 'silver',
+        minHeight: '50px',
+        backgroundColor: '#455a64',
+        color: 'white',
+        justifyContent: 'center',
+        alignItems: 'center',
       }}
     >
-      footer
+      Create by: Max Myasnikov, mail: zravenz.xmax@gmail.com
     </Box>
   );
 };
